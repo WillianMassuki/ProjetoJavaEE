@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/pages/Menu.xhtml">
+
+	<ui:define name="conteudo">
+	
+	<h:form id="formListagem">
+		<p:panel header="Usuários - Listagem">
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+				paginator="true" value="#{administradorBean.adms}" var="adm"
+				rows="5">
+				<f:facet name="header">
+					<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						actionListener="#{administradorBean.novo()}"
+						update=":mensagem :formCadastro:painel">
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				</f:facet>
+
+				<p:column headerText="Nome" sortBy="#{adm.pessoa.nome}"
+					filterBy="#{adm.pessoa.nome}">
+					<h:outputText value="#{adm.pessoa.nome}" />
+				</p:column>
+
+				<p:column headerText="Email" sortBy="#{adm.pessoa.email}"
+					filterBy="#{adm.pessoa.email}">
+					<h:outputText value="#{adm.pessoa.email}" />
+				</p:column>
+
+				<p:column headerText="Opções">
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Usuários - Cadastro" widgetVar="dialogo"
+		draggable="false" resizable="false" modal="true" closable="false">
+		<h:form id="formCadastro">
+			<h:panelGrid id="painel" columns="2">
+				<p:outputLabel for="pessoa" value="Pessoa:" />
+				<p:selectOneMenu id="pessoa" filter="true"
+					value="#{administradorBean.adm.pessoa}" required="true"
+					requiredMessage="O campo 'Pessoa' é obrigatório"
+					converter="omnifaces.SelectItemsConverter">
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione uma pessoa" />
+					<f:selectItems value="#{administradorBean.pessoas}" var="pessoa"
+						itemValue="#{pessoa}" itemLabel="#{pessoa.nome} - #{pessoa.email}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel for="senha" value="Senha:" />
+				<p:password id="senha" maxlength="8" size="10"
+					value="#{administradorBean.adm.senha}" required="true"
+					requiredMessage="O campo 'Senha' é obrigatório"
+					validatorMessage="Informe uma senha de 6 a 8 caracteres">
+					<f:validateLength minimum="6" maximum="8" />
+				</p:password>
+
+			<h:panelGrid columns="2">
+				<p:commandButton value="Salvar"
+					update=":mensagem :formCadastro:painel :formListagem:tabela"
+					actionListener="#{administradorBean.salvar}" />
+				<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+			</h:panelGrid>
+			</h:panelGrid>
+			</h:form>
+	</p:dialog>
+</ui:define>
+</ui:composition>

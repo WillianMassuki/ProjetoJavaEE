@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/pages/Menu.xhtml">
+
+	<ui:define name="conteudo">
+	
+	<p:panel header="Pedidos">
+		<p:dataTable id="tabelaPedidoCliente"
+			emptyMessage="Nenhum registro encontrado."
+			value="#{notaFiscalBean.vendas}" var="notafiscal">
+
+			<p:column headerText="Codigo do Pedido">
+				<h:outputText value="#{notafiscal.codigo}" />
+			</p:column>
+			
+
+				<p:column headerText="Horario:">
+					<h:outputText value="#{notafiscal.horario}">
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Valor Total">
+					<h:outputText value="#{notafiscal.precoTotal}">
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Opções">
+				<h:form>
+					<p:commandButton value="Solicitar Troca" action="ItemProdutos.xhtml"/>
+					</h:form>
+					
+					<h:form>
+					<p:commandButton value="Solicitar Devolucao" actionListener="#{pedidoClienteBean.devolucao}">
+					<f:attribute name="vendaSelecionado" value="#{notafiscal}" />
+					</p:commandButton>
+					</h:form>
+					
+					<p:commandButton value="Listagem"/>
+					
+				</p:column>
+
+		</p:dataTable>
+		
+		<!-- CRIAR O BOTÃO VOLTAR -->
+		
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</p:panel>
+		
+		<p:dialog header="Listagem" widgetVar="dialogo"
+		draggable="false" resizable="false" modal="true" closable="false">
+		<h:form id="formListagem">
+
+				<p:dataTable id="tabelaListagem"
+			emptyMessage="Nenhum registro encontrado."
+			value="#{pedidoClienteBean.itens}" var="item">
+
+			<p:column headerText="Codigo">
+				<h:outputText value="#{item.codigo}" />
+			</p:column>
+			
+			<p:column headerText="Descricao">
+				<h:outputText value="#{item.produto.descricao}" />
+			</p:column>
+			
+			<p:column headerText="Quantidade">
+				<h:outputText value="#{item.quantidade}" />
+			</p:column>
+			
+			<p:column headerText="Opções">
+				<h:form>
+					<p:commandButton value="Solicitar Troca"  update=":formListagem:tabelaListagem" 
+					actionListener="#{pedidoClienteBean.teste}" />
+					</h:form>
+			</p:column>
+				</p:dataTable>
+
+		</h:form>
+		<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+	</p:dialog>
+
+	</ui:define>
+</ui:composition>

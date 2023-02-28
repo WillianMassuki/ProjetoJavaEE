@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+
+		<!-- Configurações de Conexão com o Banco de Dados -->
+		<property name="connection.url">jdbc:postgresql://localhost/les</property> <!-- BD Mane -->
+   		<property name="connection.driver_class">org.postgresql.Driver</property> <!-- DB Driver -->
+   		<property name="connection.username">postgres</property> <!-- DB User -->
+   		<property name="connection.password">root</property> <!-- DB Password -->
+
+		<!-- Pool de Conexões -->
+		<property name="connection.pool_size">1</property>
+
+		<!-- SQL dialect -->
+		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property> 
+		
+		<!-- Gerenciamento do Contexto das Sessões -->
+		<property name="current_session_context_class">thread</property>
+
+		<!-- Cache de Segundo Nível -->
+		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+
+		<!-- Mostra as SQLs Geradas -->
+		<property name="show_sql">true</property>
+
+		<!-- Cria as tabelas do banco de dados -->
+		<property name="hbm2ddl.auto">validate</property>
+		
+		<!-- Mapeamento das entidades -->
+
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Administrador" />
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Bandeira"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Cartao" />
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Cidade" />
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Cliente"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Cupom"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.CupomProduto"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Endereco"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Estado"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Fabricante"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Item"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Pedido"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Pessoa"/>
+		
+		<mapping class ="br.com.willian.les2019.ecommerce.dominio.Produto"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Usuario"/>
+		<mapping class="br.com.willian.les2019.ecommerce.dominio.Venda"/>
+	</session-factory>
+
+</hibernate-configuration>

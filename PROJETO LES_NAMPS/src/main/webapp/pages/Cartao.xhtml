@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/pages/Menu.xhtml">
+	
+	<ui:define name="conteudo">
+	
+	<h:form id="formListagem">
+		<p:panel header="Cartoes - Listagem">
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+				paginator="true" value="#{cartaoBean.cartoes}" var="cartao" rows="5">
+				<f:facet name="header">
+					<p:commandButton value="Novo" oncomplete="PF('dialogo').show();"
+						actionListener="#{cartaoBean.novo}" update=":formCadastro:painel" />
+				</f:facet>
+
+				<p:column headerText="Nome do Cartao" sortBy="#{cartao.nomeCartao}"
+					filterBy="#{cartao.nomeCartao}">
+					<h:outputText value="#{cartao.nomeCartao}" />
+				</p:column>
+
+				<p:column headerText=" Numero do Cartao"
+					sortBy="#{cartao.numeroCartao}" filterBy="#{cartao.numeroCartao}">
+					<h:outputText value="#{cartao.numeroCartao}" />
+				</p:column>
+
+				<p:column headerText="Codigo de Seguranca"
+					sortBy="#{cartao.codigoSeguranca}"
+					filterBy="#{cartao.codigoSeguranca}">
+					<h:outputText value="#{cartao.codigoSeguranca}" />
+				</p:column>
+
+				<p:column headerText="bandeira" sortBy="#{cartao.bandeira.bandeira}"
+					filterBy="#{cartao.bandeira.bandeira}">
+					<h:outputText value="#{cartao.bandeira.bandeira}" />
+				</p:column>
+
+				<p:column headerText="Opções">
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{cartaoBean.excluir}"
+						update=":mensagem :formListagem:tabela">
+						<p:confirm header="Confirmação" message="Deseja excluir o cartao?"
+							icon="ui-icon-alert" />
+						<f:attribute name="cartaoSelecionado" value="#{cartao}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{cartaoBean.editar}"
+						update=":formCadastro:painel" oncomplete="PF('dialogo').show();">
+						<f:attribute name="cartaoSelecionado" value="#{cartao}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Cartoes - Cadastro" widgetVar="dialogo"
+		draggable="false" resizable="false" modal="true" closable="false">
+		<h:form id="formCadastro">
+			<h:panelGrid id="painel" columns="2">
+
+				<p:outputLabel value="Nome do titular:" />
+				<p:inputText maxlength="50" size="30"
+					value="#{cartaoBean.cartao.nomeCartao}" />
+
+				<p:outputLabel value="Numero do Cartao:" />
+				<p:inputText maxlength="10" size="10"
+					value="#{cartaoBean.cartao.numeroCartao}" />
+
+				<p:outputLabel value="Codigo de Segurancao:" />
+				<p:inputText maxlength="10" size="10"
+					value="#{cartaoBean.cartao.codigoSeguranca}" />
+
+				
+				<p:outputLabel for="bandeira" value="Bandeira:" />
+				<p:selectOneMenu id="bandeira" filter="true"
+					value="#{cartaoBean.cartao.bandeira}"
+					converter="omnifaces.SelectItemsConverter" required="true"
+					requiredMessage="O campo 'Bandeira' é obrigatório">
+					<f:selectItem noSelectionOption="true"
+						itemLabel="Selecione uma bandeira" />
+					<f:selectItems value="#{cartaoBean.bandeiras}" var="bandeira"
+						itemValue="#{bandeira}" itemLabel="#{bandeira.bandeira}" />
+				</p:selectOneMenu>
+					
+					</h:panelGrid>
+					
+					<h:panelGrid columns="2">
+				<p:commandButton value="Salvar"
+					actionListener="#{cartaoBean.salvar}"
+					update=":mensagem :formCadastro:painel :formListagem:tabela" />
+				<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" />
+
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	</ui:define>
+</ui:composition>

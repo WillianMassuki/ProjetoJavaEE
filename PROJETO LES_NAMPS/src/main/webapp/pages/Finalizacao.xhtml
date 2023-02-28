@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/pages/Menu.xhtml">
+
+	<ui:define name="conteudo">
+
+	<p:panel header="Pedidos">
+		<p:dataTable id="tabelaCesta"
+			emptyMessage="Nenhum registro encontrado."
+			value="#{sessionScope.vendaBean.itensVenda}" var="itemVenda">
+
+			<p:column headerText="Descrição">
+				<h:outputText value="#{itemVenda.produto.descricao}" />
+			</p:column>
+			
+				<p:column headerText="Preço Un.">
+					<h:outputText value="#{itemVenda.produto.preco}">
+						<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Qtde.">
+					<h:outputText value="#{itemVenda.quantidade}" />
+				</p:column>
+
+				<p:column headerText="Preço Parcial">
+					<h:outputText value="#{itemVenda.precoParcial}">
+						<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+					</h:outputText>
+				</p:column>
+			
+		</p:dataTable>
+		
+	</p:panel>
+	
+	<h:panelGrid border="1" columns="2">
+	<h:panelGroup>Nome Cliente</h:panelGroup>
+	<h:panelGroup>Willian</h:panelGroup>
+	<h:panelGroup>Forma de Pagamento</h:panelGroup>
+	<h:panelGroup>Cartao</h:panelGroup>
+	<h:panelGroup>Numero do cartao</h:panelGroup>
+	<h:panelGroup>0098765</h:panelGroup>
+	<h:panelGroup>parcelas</h:panelGroup>
+	<h:panelGroup>1x</h:panelGroup>
+	<h:panelGroup>valorTotal</h:panelGroup>
+	<h:panelGroup>R$ 80,00 </h:panelGroup>
+	
+	<h:form>
+	<p:commandButton id="Button" value="Concluir" action="#{finalizarCompraBean.save}" />
+	</h:form>
+	
+	</h:panelGrid>
+	</ui:define>
+</ui:composition>
